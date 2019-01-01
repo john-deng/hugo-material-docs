@@ -14,25 +14,27 @@
 
 <main class="main">
     <div class="drawer">
-        {{ partial "drawer" . }}
+        {{ partial "drawer_list" . }}
     </div>
 
     <article class="article">
         <div class="wrapper">
-            <h1>{{ .Title }} {{ if .IsDraft }} (Draft){{ end }}</h1>
-            <aside >
-                {{ with .Params.author }} 作者: {{ . }} {{ end }}
-            </aside>
+            <h1>目录 - {{ .Title | singularize }}</h1>
 
-            {{ .Content }}
+            {{ range .Data.Pages }}
+            <a href="{{ .Permalink }}" title="{{ .Title }}">
+                <h2>{{ .Title }} </h2>
+            </a>
+            <br> 
+           
+              {{substr .Summary 0 300 | markdownify }} 
+              <a href="{{ .Permalink }}"><br>[阅读全文]</a>  
+            
+            <hr> {{ end }}
 
             <aside class="copyright" role="note">
                 {{ with .Site.Params.copyright }} &copy; {{ now.Format "2006" }} {{ . }} &ndash; {{ end }} - By John Deng.
             </aside>
-
-            <footer class="footer">
-                {{ partial "footer" . }}
-            </footer>
         </div>
     </article>
 
